@@ -1,0 +1,36 @@
+ <div class="menumenudiv" ng-component="top-menu-div"> 
+
+		<a
+		class="w-button"
+		id="registerButton"
+		routerLink="/users_register"
+		*ngIf="!loggedIn">Register</a>
+
+		<a
+		class="w-button"
+		id="loginButton"
+		routerLink="/users_login"
+		*ngIf="!loggedIn">Login</a>
+
+		<a
+		class="button w-button"
+		id="profileButton"
+		_routerLink="/"
+		*ngIf="loggedIn"
+		(click)="showProfile=!showProfile">Profile</a>
+
+		<ul
+		class="unordered-list-3"
+		id="dropdown"
+		*ngIf="showProfile">
+
+   <li><a class="w-button" routerLink="/articles_submit_an_article">Articles</a></li> 
+
+		<li><a
+		class="w-button"
+		id="logoutButton"
+		_routerLink="/"
+		(click)="onSignout()">Logout</a></li>
+
+  </ul> 
+ </div> 

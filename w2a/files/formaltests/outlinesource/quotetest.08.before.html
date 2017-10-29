@@ -1,0 +1,38 @@
+
+		<div
+		class="contentdiv"
+		id="contentdiv"
+		ng-router="home">
+
+  <div class="searchbardiv">
+   <img class="searchbar-icon" src="assets/images/b57c66566dd5286a036435b570d1740f.png">
+   <div class="w-row">
+    <div class="w-col w-col-1"></div>
+    <div class="w-col w-col-10">
+     <h4>Article</h4>
+
+		<h3
+		id="articleTitle">{{ article.title | async }}</h3>
+
+    </div>
+    <div class="w-col w-col-1"></div>
+   </div>
+  </div>
+  <div class="resultsbar">
+   <div class="w-row">
+    <div class="w-col w-col-1"></div>
+    <div class="w-col w-col-10">
+     <div>
+
+		<h4
+		id="errorMessage">{{errorMessage}}</h4>
+
+		<p
+		id="helpMessage"></p>
+
+     </div>
+    </div>
+    <div class="w-col w-col-1"></div>
+   </div>
+  </div>
+ </div>

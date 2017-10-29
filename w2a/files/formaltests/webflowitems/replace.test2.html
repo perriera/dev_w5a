@@ -1,0 +1,66 @@
+
+		<div
+		class="resultsbar"
+		id="articleResults"
+		ng-component="article-results">
+
+  <div class="w-row"> 
+   <div class="w-col w-col-1"></div> 
+   <div class="w-col w-col-10"> 
+
+		<div
+		id="searchResult"
+		*ngFor="let article of articles; let i=index">
+
+		<a
+		class="w-inline-block"
+		id="articleLink"
+		ng-parameter="/{{article._id}}"
+		routerLink="/articles_review_an_article/{{article._id}}"
+		ng-parameter1="{{article._id}}">
+		<h4>{{article.title}}
+		#{{i+1}}</h4>
+		</a>
+
+		<p
+		id="articleData"
+		[innerHTML]="article.summary">article.summary</p>
+
+		<div
+		class="w-clearfix"
+		id="editMenu"
+		[hidden]="!showEditMenu">
+
+      <h5 class="heading-2">Who</h5> 
+      <h5 class="heading-2">What</h5> 
+      <h5 class="heading-2">When</h5> 
+      <h5 class="heading-2">Where</h5> 
+      <h5 class="heading-2">Why</h5> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="w-col w-col-1"></div> 
+  </div> 
+  <div class="w-row"> 
+   <div class="w-col w-col-1"></div> 
+   <div class="w-col w-col-10"> 
+
+		<a
+		class="w-button"
+		id="pageDown"
+		(click)="onPageDown()"
+		_routerLink="/#">Page
+		Down</a>
+
+		<a
+		class="w-button"
+		id="pageUp"
+		(click)="onPageUp()"
+		_routerLink="/#">Page
+		Up</a>
+
+   </div> 
+   <div class="w-col w-col-1"></div> 
+  </div> 
+ </div> 
+

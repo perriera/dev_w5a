@@ -1,0 +1,21 @@
+<div
+  class="cc code"
+  id="code">
+
+  import { ServerConstants } from '../src/app/shared/Server.mounts';
+  <br>import express from './App';
+  <br>
+  <br>const fs = require('fs');
+  <br>const https = require('https');
+  <br>
+  <br>
+  <br> &nbsp;const http = require('http');
+  <br> &nbsp;http.createServer(express,(req, res) =&gt; {{"{"}}
+  <br> &nbsp; &nbsp;if (req &amp;&amp; req.url) {
+  <br> &nbsp; &nbsp; &nbsp;console.log(req.url);
+  <br> &nbsp; &nbsp;}
+  <br> &nbsp; &nbsp;console.log('Http server is listening on ' + ServerConstants.client_port);
+  <br> &nbsp;}).listen( ServerConstants.client_port);
+  <br>
+  <br>}
+</div>

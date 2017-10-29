@@ -1,0 +1,22 @@
+<div>
+
+  <code
+    class="cc code"
+    ng-morph="code"
+    id="code">import {{"{"}} ServerConstants {{"}"}} from '../src/app/shared/Server.mounts';
+    <br>import express from './App';
+    <br>
+    <br>const fs = require('fs');
+    <br>const https = require('https');
+    <br>
+    <br>const port = process.env.PORT || ServerConstants.server_port;
+    <br>
+    <br>if ( ServerConstants.live ) {{"{"}}
+    <br>
+    <br> &nbsp;const options = {{"{"}}
+    <br> &nbsp; &nbsp;key: fs.readFileSync(ServerConstants.live_key),
+    <br> &nbsp; &nbsp;cert: fs.readFileSync(ServerConstants.live_cert),
+    <br> &nbsp; &nbsp;ca: fs.readFileSync(ServerConstants.live_ca)
+    <br> &nbsp;{{"}"}}; </code>
+
+</div>

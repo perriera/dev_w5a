@@ -1,0 +1,16 @@
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'code_forward', component: ForwardComponent, canActivate: [ UsageGuard ] },
+  { path: 'code_reverse', component: ReverseComponent, canActivate: [ UsageGuard ] },
+  { path: 'users_register', component: RegisterComponent },
+  { path: 'users_login', component: LoginComponent },
+  { path: 'subscriptions_cancellation', component: CancellationComponent, canActivate: [ AuthGuard ] },
+  { path: 'subscriptions_thank_you', component: ThankYouComponent, canActivate: [ AuthGuard ] },
+  { path: 'subscriptions_cancel_checkout', component: CancelCheckoutComponent, canActivate: [ AuthGuard ] },
+  { path: 'subscriptions', component: SubscriptionsComponent, canActivate: [ AuthGuard ] },
+  { path: 'subscriptions_subscriptions_admin', component: SubscriptionsAdminComponent, canActivate: [ AuthGuard ] },
+  { path: 'subscriptions_how_to_cancel', component: HowToCancelComponent  },
+  { path: 'subscriptions_are_you_sure', component: AreYouSureComponent  },
+  { path: '404', component: HomeComponent },
+  { path: '**', redirectTo: '/404' }
+];

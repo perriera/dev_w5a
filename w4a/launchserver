@@ -1,0 +1,3 @@
+nohup java -jar ../w4a.jar files/inifiles/w4a.mock-server.monitor.ini -w >output.txt &
+
+

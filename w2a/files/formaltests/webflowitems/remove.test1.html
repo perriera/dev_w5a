@@ -1,0 +1,65 @@
+
+		<div
+		class="contentdiv"
+		id="contentdiv"
+		ng-router="home">
+
+  <div class="searchbardiv">
+   <img class="searchbar-icon" src="assets/images/b57c66566dd5286a036435b570d1740f.png">
+   <div class="w-row">
+    <div class="w-col w-col-1"></div>
+    <div class="w-col w-col-10">
+     <div class="form-block w-form">
+
+		<form
+		class="form"
+		data-name="Email Form"
+		id="email-form"
+		name="email-form">
+
+		<input
+		class="text-field w-input"
+		data-name="Name"
+		id="name"
+		maxlength="256"
+		name="name"
+		placeholder="What are you looking for?"
+		type="text">
+
+		<input
+		class="submit-button w-button"
+		data-wait="Please wait..."
+		id="searchButton"
+		type="submit"
+		value="Search">
+
+      </form>
+
+
+       TODO: REMOVE THE FOLLOWING ...
+
+
+      <div class="w-form-done">
+       <div>
+         Thank you! Your submission has been received!
+       </div>
+      </div>
+      <div class="w-form-fail">
+       <div>
+         Oops! Something went wrong while submitting the form
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="w-col w-col-1"></div>
+   </div>
+  </div>
+
+		<app-article-results
+		id="articleResults"
+		class="resultsbar"
+		ng-component="article-results"
+		[publicListing]="true"></app-article-results>
+
+ </div>
+

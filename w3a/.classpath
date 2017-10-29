@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/Users/perry/Desktop/dev/dev_w5a/lib/ini4j-0.5.4.jar"/>
+	<classpathentry kind="lib" path="/Users/perry/Desktop/dev/dev_w5a/lib/jsoup-1.10.2.jar"/>
+	<classpathentry kind="lib" path="/Users/perry/Desktop/dev/dev_w5a/lib/zip4j_1.3.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/w0a"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/w1a"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/w2a"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

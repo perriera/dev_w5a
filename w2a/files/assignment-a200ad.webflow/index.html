@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--  This site was created in Webflow. http://www.webflow.com -->
+<!--  Last Published: Wed May 10 2017 18:36:17 GMT+0000 (UTC)  -->
+<html data-wf-page="5909df4a18423f673f8ce056" data-wf-site="5909df4a18423f673f8ce055">
+<head>
+  <meta charset="utf-8">
+  <title>Assignment</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/assignment-a200ad.webflow.css" rel="stylesheet" type="text/css">
+  <script src="js/modernizr.js" type="text/javascript"></script>
+  <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
+</head>
+<body>
+  <div>
+    <div class="w-row">
+      <div class="w-col w-col-1"><img src="images/1-freepik.jpg">
+      </div>
+      <div class="w-col w-col-11">
+        <h1>Assignment: Bind It!</h1>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="w-row">
+      <div class="w-col w-col-3">
+        <div id="gcId" ng-component="game-control"><a class="button w-button" href="#" id="startId" ng-app="controller" ng-use="test">Start</a><a class="button w-button" href="#" id="stopId">Stop</a>
+          <h3>Game Control</h3>
+          <div id="test">
+            <div id="test2">
+              <h1>Heading</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-col w-col-3">
+        <div id="oId" ng-component="odd">
+          <h3 id="oddId">0</h3>
+          <h3>Odd</h3>
+        </div>
+      </div>
+      <div class="w-col w-col-3">
+        <div id="eId" ng-component="even">
+          <h3 id="evenId">0</h3>
+          <h3>Even</h3>
+        </div>
+      </div>
+      <div class="w-col w-col-3">
+        <div id="nId" ng-component="number-generator">
+          <h3 id="numberId">0</h3>
+          <h3>Number</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ul>
+      <li>Create three new components: GameControl, Odd and Even</li>
+      <li>The GameControl Component should have buttons to start and stop the game</li>
+      <li>When starting the game, an event (holding a incrementing number) should get emitted each second (ref = setInterval())</li>
+      <li>he event should be listenable from outside the component</li>
+      <li>When starting the game, an event (holding a incrementing number) should get emitted each second (ref = setInterval())</li>
+      <li>When stopping the game, no more events should get emitted (clearInterval(ref))</li>
+      <li>A new Odd component should get created for every odd number emitted, the same should happen for the Even Component (on even numbers)</li>
+      <li>Simply output Odd - NUMBER or Even - NUMBER in the two components</li>
+      <li>Style the element (e.g. paragraph) holding your output text differently in both components</li>
+    </ul>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
+</html>

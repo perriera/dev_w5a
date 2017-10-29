@@ -1,0 +1,159 @@
+<h2 class="heading-14">ng-id</h2> 
+ <div class="w-row"> 
+  <div class="w-col w-col-1"></div> 
+  <div class="w-col w-col-10"> 
+   <div class="w-row"> 
+    <div class="w-col w-col-4"> 
+     <div class="rich-text-block w-richtext"> 
+      <h4>What is ng-id?</h4> 
+      <p>ng-id is another way to preserve your HTML elements between updates from Webflow to Angular 2. However at the moment, it is not implemented as the id method is simpler to utilize. Please use the id attribute for now, at a later time the ng-id will be available for use. This page will show you how to use the id tag itself, instead of adding ng-id as a custom attribute.</p> 
+     </div> 
+     <div class="rich-text-block w-richtext"> 
+      <h4><strong>Third-party JavaScript Library support</strong></h4> 
+      <p>Another application of ng-morph is in the case where you'd like to use a popular JavaScript framework with your application but there isn't a way to have that represented in your Webflow project by default. The popular&nbsp;quill-editor&nbsp;package is a classic example of this. With ng-morph, you can easily embed custom HTML tags from popular JavaScript libraries or even add your own.</p> 
+     </div> 
+     <a class="button w-button" id="id1" routerLink="/#">ng-id</a> 
+     <div class="rich-text-block"> 
+      <h4>Step by step:</h4> 
+      <ol> 
+       <li>The first thing you need to do is identify a section of your screen that you'd like to preserve. For example a main menu item.</li> 
+       <li>Inside the web page select the element you'd like to add an id too!</li> 
+       <li>Simply put a name in the id field.</li> 
+       <li>HTML also has a name field along with the id field. In Webflow, it may try to make the two of these different. It's a good idea to make sure both the name field and the id field are the same, but it's not necessary for conversion. It may only become an issue with Angular 2 to have a different value inside the name attribute as oppose to the id attribute.</li> 
+      </ol> 
+     </div> 
+    </div> 
+    <div class="w-col w-col-8"> 
+     <button id="inWebflow" class="button w-button" _routerLink="/#" (click)="contentToShow = 1" ng-morph="button">In Webflow</button> 
+     <button id="inAngular" class="button w-button" _routerLink="/#" (click)="contentToShow = 2" ng-morph="button">In Angular 2</button> 
+     <button id="inAngular1" class="button w-button" (click)="contentToShow = 3" ng-morph="button" _routerLink="/#">In TypeScript</button> 
+     <div class="div-block-12" id="WebflowStuff" *ngIf="contentToShow==1"> 
+      <h4>In Webflow:</h4> 
+      <div class="cc">
+        The first thing you need to do is identify what needs to have an id. Take for example the FORWARD button: 
+      </div> 
+      <img class="image" src="assets/images/id001.png" srcset=""> 
+      <div class="cc">
+        Highlight the FORWARD button using Webflow's editor: 
+      </div> 
+      <img class="image" src="assets/images/id002.png" srcset=""> 
+      <div class="cc">
+        With the selected button highlighted you will see the item also selected in your right panel. In this particular case, you want to actually select the Link Block associated with the menu item.&nbsp; 
+      </div> 
+      <img class="image" src="assets/images/id003a.png" srcset=""> 
+      <div class="cc">
+        Adding an id to either will work, but for simplicity you may want to use the Link Block instead of the button. It's a choice you can make, in this example we use the Link Block: 
+      </div> 
+      <img class="image" src="assets/images/id004.png" srcset=""> 
+      <div class="cc">
+        Once there, simply add a value to the id field and you are done! 
+      </div> 
+      <img class="image" src="assets/images/id005b.png" srcset=""> 
+     </div> 
+     <div class="div-block-12" id="AngularStuff" *ngIf="contentToShow==2"> 
+      <h4>In Angular 2:</h4> 
+      <div class="cc">
+        Before the id's are added the HTML code inside your Angular 2 project will look like this: 
+      </div> 
+      <img class="image" src="assets/images/ida001.png" srcset=""> 
+      <div class="cc">
+        After you add the id's your code will be transformed into something like this: 
+      </div> 
+      <img class="image" src="assets/images/ida002.png" srcset=""> 
+      <div class="cc">
+        While it's not necessary for this example, we just happen be using a &lt;button&gt; here but Webflow uses &lt;a&gt; tags for buttons. As an option you might like to use the actually &lt;button&gt; tag. If you plan on disabling the button at some point, it's no longer an option, you need to morph the &lt;a&gt; tag into a &lt;button&gt;. To do this simply add the ng-morph attribute: 
+      </div> 
+      <img class="image" src="assets/images/ida003.png" srcset=""> 
+      <div class="cc">
+        Do another download from Webflow and then FreeFlowJS and notice how ng-morph has updated your &lt;a&gt; tags to &lt;button&gt; tags. 
+      </div> 
+      <img class="image" src="assets/images/ida004.png" srcset=""> 
+      <div class="cc">
+        Also notice that there are no href attributes. The href attibutes of the &lt;a&gt; tag have been converted into the routerLink of Angular 2 for you: 
+      </div> 
+      <img class="image" src="assets/images/ida004.png" srcset=""> 
+      <div class="cc">
+        Sometimes however, you do not need either the href nor the routerLink. Sometimes you just need the &lt;button&gt; to be a &lt;button&gt; where you'll add a standard Angular 2 (click) attribute instead. To disable the routerLink all you have to do is add a '_' in front of the routerLink attribute. 
+      </div> 
+      <img class="image" src="assets/images/ida005.png" srcset=""> 
+      <div class="cc">
+        Usually you do this because the button is going to be used for a (click) operation as such: 
+      </div> 
+      <img class="image" src="assets/images/ida007.png" srcset=""> 
+     </div> 
+     <div class="div-block-12" id="AngularStuff1" *ngIf="contentToShow==3"> 
+      <h4>In TypeScript:</h4> 
+      <div class="cc">
+        The whole essence of converting your Webflow HTML code into Angular 2 CLI&nbsp;is to take advantage of TypeScript. This is a perfect example of why you would want to do that: 
+      </div> 
+      <img class="image" src="assets/images/ids001.png" srcset=""> 
+      <div class="cc">
+        Inside ng-id.component.ts you find the default values as generated for you by FreeFormJS: 
+      </div> 
+      <img class="image" src="assets/images/ids002.png" srcset=""> 
+      <div class="cc">
+        Inside the HTML code we added two Angular 2 style (click) events: 
+      </div> 
+      <img class="image" src="assets/images/ida007.png" srcset=""> 
+      <div class="cc">
+        Inside the TypeScript code for this component you now want to add the events themselves: 
+      </div> 
+      <img class="image" src="assets/images/ids003.png" srcset=""> 
+      <div class="cc">
+        In this particular application, this very page to be precise, we need to toggle certain portions of the page. To do this we will add the *ngIf element of Angular 2: 
+      </div> 
+      <img class="image" src="assets/images/ids004.png" srcset=""> 
+      <div class="cc">
+        More precisely you'll see the *ngIf applied to another &lt;div&gt; the one determining the display of the content inside that &lt;div&gt;: 
+      </div> 
+      <img class="image" src="assets/images/ids005.png" srcset=""> 
+      <div class="cc">
+        With Angular 2 CLI, all you need to now is associate the state of the 'showWebflowStuff' with the (click) method assigned to the &lt;button&gt;: 
+      </div> 
+      <img class="image" src="assets/images/ids008.png" srcset=""> 
+      <div class="cc">
+        Had there been only two items to select you could have easily just used the inverted value of one flag here ( we are strong believers in 'less code is more code' ): 
+      </div> 
+      <img class="image" src="assets/images/ids009.png" srcset=""> 
+      <div class="cc">
+        However, because we actually have THREE tabs to show now, the proper coding looks like this for the HTML code: 
+      </div> 
+      <img class="image" src="assets/images/ids010.png" srcset=""> 
+      <div class="cc">
+        You should notice something odd. We appear to have two id's with the same value, but they are not the same value. They differ by one number. Can you see it? It's the id for the TypeScript item. It's the same as the id for the Angular menu item but it has the number 1 added to it. This is also a default behavior of FreeFormJS, it automatically assigns a new id whenever it finds a duplicate. Also, the completed code is below: 
+      </div> 
+      <img class="image" src="assets/images/ids011.png" srcset=""> 
+      <div class="cc">
+        The following is the updated HTML code for this component: 
+      </div> 
+      <img class="image" src="assets/images/ids014.png" srcset=""> 
+      <div class="cc">
+        In our rush to put together this page, we overlooked the ng-morph for the TypeScript menu item. Simply add the ng-morph attribute and do another download and conversion: 
+      </div> 
+      <img class="image" src="assets/images/ids015.png" srcset=""> 
+      <div class="cc">
+        The morphed code now becomes: 
+      </div> 
+      <img class="image" src="assets/images/ids016.png" srcset=""> 
+      <div class="cc">
+        The completed code now looks like this: 
+      </div> 
+      <img class="image" src="assets/images/ids017.png" srcset=""> 
+      <div class="cc">
+        On the subject of 'less code is more code' it could be argued that since changing a flag is so minor, you could easily do it inside the HTML file itself: 
+      </div> 
+      <img class="image" src="assets/images/ids018.png" srcset=""> 
+      <div class="cc">
+        That will certainly work but in light of the fact that we have a .ts file generated for us automatically, we may as well make use of it. It all depends upon your coding style. FreeFormJS works with it, either way! 
+      </div> 
+      <img class="image" src="assets/images/ids020.png" srcset=""> 
+      <div class="cc">
+        The important point here though is that you are able to now to use Webflow to program with Angular 2 with all of your behaviour and attributes stored in either a .html, .css or .ts file quickly and easily in one neat location for each component. This is what FreeFormJS is meant to do for you! 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="w-col w-col-1"></div> 
+ </div> 
+ <div class="div-block-11"></div> 

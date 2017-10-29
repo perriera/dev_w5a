@@ -1,0 +1,50 @@
+<div
+  class="cc code"
+  id="code">
+
+  import { ServerConstants } from '../src/app/shared/Server.mounts';
+  <br>import express from './App';
+  <br>
+  <br>const fs = require('fs');
+  <br>const https = require('https');
+  <br>
+  <br>const port = process.env.PORT || ServerConstants.server_port;
+  <br>
+  <br>if ( ServerConstants.live ) {
+  <br>
+  <br> &nbsp;const options = {
+  <br> &nbsp; &nbsp;key: fs.readFileSync(ServerConstants.live_key),
+  <br> &nbsp; &nbsp;cert: fs.readFileSync(ServerConstants.live_cert),
+  <br> &nbsp; &nbsp;ca: fs.readFileSync(ServerConstants.live_ca)
+  <br> &nbsp;};
+  <br>
+  <br> &nbsp;https.createServer(options, express, (req, res) =&gt; {
+  <br> &nbsp; &nbsp;if (req &amp;&amp; req.url) {
+  <br> &nbsp; &nbsp; &nbsp;console.log(req.url);
+  <br> &nbsp; &nbsp;}
+  <br> &nbsp;}).listen(443, (req, res) =&gt; {
+  <br> &nbsp; &nbsp;return console.log('Https client is listening on 443');
+  <br> &nbsp;});
+  <br>
+  <br> &nbsp;const http = require('http');
+  <br> &nbsp;http.createServer((req, res) =&gt; {
+  <br> &nbsp; &nbsp;if (req &amp;&amp; req.url) {
+  <br> &nbsp; &nbsp; &nbsp;console.log(req.url);
+  <br> &nbsp; &nbsp;}
+  <br> &nbsp; &nbsp;console.log('Http server is redirecting on 80');
+  <br> &nbsp; &nbsp;res.writeHead(301, { 'Location': 'https://' + req.headers[ 'host' ] + req.url });
+  <br> &nbsp; &nbsp;res.end();
+  <br> &nbsp;}).listen(80);
+  <br>
+  <br>} else {
+  <br>
+  <br> &nbsp;const http = require('http');
+  <br> &nbsp;http.createServer(express,(req, res) =&gt; {
+  <br> &nbsp; &nbsp;if (req &amp;&amp; req.url) {
+  <br> &nbsp; &nbsp; &nbsp;console.log(req.url);
+  <br> &nbsp; &nbsp;}
+  <br> &nbsp; &nbsp;console.log('Http server is listening on ' + ServerConstants.client_port);
+  <br> &nbsp;}).listen( ServerConstants.client_port);
+  <br>
+  <br>}
+</div>

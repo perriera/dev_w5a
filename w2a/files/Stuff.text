@@ -1,0 +1,417 @@
+package org.w2a.tests;
+
+import java.io.File;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.w2a.HTMLEdit;
+import org.w2a.W2AIniFile;
+import org.w2a.exceptions.NotAnAppRouteModuleMissAppRoutesException;
+import org.w2a.ngcomponent.NgComponentExtractor;
+import org.w2a.ngfile.NgFile;
+import org.w2a.ngmodule.NgAppModule;
+import org.w2a.ngmodule.NgAppRoutingModule;
+import org.w2a.ngmodule.NgModule;
+import org.w2a.ngroute.NgAppRoutes;
+import org.w2a.ngroute.NgImport;
+import org.w2a.ngroute.NgImportMap;
+import org.w2a.ngtypes.NgTextFile;
+
+
+public class NgAppModuleTest extends NgTestSetup {
+
+	static public String importAppBaseHrefFrom = "import { APP_BASE_HREF } from '@angular/common';";
+	static public String importRouterModuleRoutesFrom = "import { RouterModule, Routes } from '@angular/router';";
+	static public String httpRouterModuleForRootAppRoutes = "HttpModule,\n\t\tRouterModule.forRoot(appRoutes)\n";
+	static public String providersProvideAppBaseHref = "{ provide: APP_BASE_HREF, useValue: '/' },";
+	static public String appRoutesMarker = "\nconst appRoutes: Routes = [\n";
+	static public String constAppRoutesRoutes = "const appRoutes: Routes = [";
+	static public String constAppRoutesRoutesEnd = "];";
+	static public String importAppComponentFrom = "import { AppComponent } from './app.component';";
+	
+	static String testFilename = "files/sample.ini";
+	String contents;
+	W2AIniFile iniFile;
+	NgFile ngFile;
+	String appModuleFilename;
+	String appModuleContent;
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		this.contents = NgTextFile.input("files/test.module.ts");
+		this.iniFile = new W2AIniFile(testFilename);
+		this.ngFile = new NgFile(this.iniFile);
+		this.appModuleFilename = ngFile.getAppModuleFilename();
+		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+		Assert.assertTrue(appModuleContent.contains("export class AppModule { }"));
+	}
+
+	/*
+	 * Test JSON library . . . 
+	 */
+	
+	@Test
+	public void test_00_JSONObject() throws Exception {
+		String contents = HTMLEdit.loadLocalFile("files/sample.json");
+		JSONObject obj = new JSONObject(contents);
+		String pageName = obj.getJSONObject("pageInfo").getString("pageName");
+		Assert.assertTrue(pageName.equals("abc"));
+		JSONArray arr = obj.getJSONArray("posts");
+		for (int i = 0; i < arr.length(); i++)
+		{
+		    Object post_id = arr.get(i);
+		    Assert.assertTrue(post_id!=null);
+		}
+	}
+	
+	/*
+	 * Remake a default app.module.ts and make any necessary changes.
+	 */
+	
+	@Test
+	public void test_01_NgModule() throws Exception {
+
+		String contents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		Assert.assertTrue(contents.contains("export class AppModule { }"));
+		
+		NgModule ngModule = new NgModuleTest(contents,iniFile);
+		
+		ngModule.input(contents);
+		String output = ngModule.output();
+		Assert.assertTrue(HTMLEdit.hasOccurances(output,"import",6));
+		
+	}
+	
+	@Test
+	public void test_02_NgModule() throws Exception {
+
+		String contents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		Assert.assertTrue(contents.contains("export class AppModule { }"));
+		
+		NgModule ngModule = new NgModuleTest(contents,iniFile);
+		
+		ngModule.input(contents);
+		
+		NgImport homeImport = new NgImport("import { HomeComponent } from './pages/home/home.component';");
+		ngModule.addImport(homeImport);
+		ngModule.addAppImport(homeImport);
+		
+		ngModule.output();
+		String output = ngModule.output();
+		Assert.assertTrue(HTMLEdit.hasOccurances(output,"import",7));
+		
+	}
+	
+	@Test
+	public void test_03_NgModule() throws Exception {
+
+		String contents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		Assert.assertTrue(contents.contains("export class AppModule { }"));
+		
+		NgModule ngModule = new NgModuleTest(contents,iniFile);
+		
+		ngModule.input(contents);
+		
+		ngModule.addModule("imports","RouterModule.forRoot(appRoutes)");
+		ngModule.addModule("exports","RouterModule");
+		ngModule.addModule("providers","{ provide: APP_BASE_HREF, useValue: '/' }");
+		
+		ngModule.addImport("import { RouterModule, Routes } from '@angular/router';");
+		ngModule.addImport("import { APP_BASE_HREF } from '@angular/common';");
+		
+		String output = ngModule.output();
+		Assert.assertTrue(HTMLEdit.hasOccurances(output,"import",8));
+		
+	}
+	
+	/*
+	 * Remake a default app.module.ts and make any necessary changes.
+	 */
+	
+	@Test
+	public void test_04_NgAppModule() throws Exception {
+
+		String contents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		Assert.assertTrue(contents.contains("export class AppModule { }"));
+		
+		NgAppModule ngAppModule = new NgAppModule(contents,iniFile);
+
+		ngAppModule.input(contents);
+		ngAppModule.output();
+		String output = ngAppModule.output();
+		
+		Assert.assertTrue(HTMLEdit.hasOccurances(output,"import",9));
+		Assert.assertTrue(output.contains(ngAppModule.getModuleClassName()));
+		Assert.assertTrue(HTMLEdit.hasOccurances(output,"import",9));
+		
+	}
+
+	/*
+	 * Remake a default app.module.ts and make any necessary changes.
+	 */
+	
+	@Test
+	public void test_05_NgAppRoutingModule() throws Exception {
+
+		String appModulecontents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		String appRoutingModulecontents = "";
+		Assert.assertTrue(appModulecontents.contains("export class AppModule { }"));
+		
+		NgAppModule ngAppModule = new NgAppModule(appModulecontents,iniFile);
+
+
+		ngAppModule.addImport("import { RecipesComponent } from './recipes/recipes.component';");
+		ngAppModule.addImport("import { ShoppingListComponent } from './shopping-list/shopping-list.component';");
+		ngAppModule.addImport("import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';");
+		ngAppModule.addImport("import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';");
+		ngAppModule.addImport("import { SignupComponent } from './auth/signup/signup.component';");
+
+		ngAppModule.input(appModulecontents);
+		ngAppModule.output();
+		
+		NgAppRoutingModule ngAppRoutingModule = new NgAppRoutingModule(appRoutingModulecontents,ngAppModule,iniFile);
+		ngAppRoutingModule.input(appRoutingModulecontents);
+		ngAppRoutingModule.output();
+		
+		String output1 = ngAppModule.output();
+		String output2 = ngAppRoutingModule.output();
+		Assert.assertTrue(HTMLEdit.hasOccurances(output1,"import",14));
+		Assert.assertTrue(HTMLEdit.hasOccurances(output2,"import",3));
+		Assert.assertTrue(output1.contains(ngAppModule.getModuleClassName()));
+		Assert.assertTrue(!output1.contains(ngAppRoutingModule.getModuleClassName()));
+		Assert.assertTrue(!output2.contains(ngAppModule.getModuleClassName()));
+		Assert.assertTrue(output2.contains(ngAppRoutingModule.getModuleClassName()));
+		
+		NgAppRoutingModule ngAppRoutingModule2 = new NgAppRoutingModule(output1,ngAppModule,iniFile);
+		String output3 = ngAppRoutingModule2.output();
+		
+		Assert.assertTrue(HTMLEdit.hasOccurances(output2,"import",3));
+		
+	}
+	
+	/*
+	 * Take an existing app-routing-module.ts and add to it's app import section without
+	 * overwriting anything already there but appending imports that are not already there.
+	 */
+	
+	@Test
+	public void test_06_NgAppRoutingModule() throws Exception {
+
+		String appModulecontents = HTMLEdit.loadLocalFile("files/sample.app.module1.ts");
+		NgAppModule ngAppModule = new NgAppModule(appModulecontents,iniFile);
+		
+		ngAppModule.addImport("import { RecipesComponent } from './pages/recipes/recipes.component';");
+		ngAppModule.addImport("import { ShoppingListComponent } from './pages/shopping-list/shopping-list.component';");
+		ngAppModule.addImport("import { RecipeStartComponent } from './pages/recipes/recipe-start/recipe-start.component';");
+		ngAppModule.addImport("import { ExportComponent } from './pages/recipes/recipe-start/recipe-start.component';");
+
+		String output1 = ngAppModule.output();
+		
+		try { 
+			NgAppRoutingModule ngAppRoutingModule = new NgAppRoutingModule(output1,ngAppModule,iniFile);
+			ngAppRoutingModule.input(null);
+		} catch ( NotAnAppRouteModuleMissAppRoutesException e ) {
+		}
+		
+		NgAppRoutingModule ngAppRoutingModule = new NgAppRoutingModule(ngAppModule,iniFile);
+		ngAppRoutingModule.input(null);
+		
+		String output2 = ngAppRoutingModule.output();
+		String[] sections = output2.split("\n\n");
+		sections[2]  = "const appRoutes: Routes = [\n";
+		sections[2] += "{ path: '', redirectTo: '/recipes', pathMatch: 'full' },\n";
+		sections[2] += "{ path: 'recipes', component: RecipesComponent, children: [\n";
+		sections[2] += "   { path: '', component: RecipeStartComponent },\n";
+		sections[2] += "   { path: 'new', component: RecipeEditComponent, canActivate: [AuthGuard] },\n";
+		sections[2] += "   { path: ':id', component: RecipeDetailComponent },\n";
+		sections[2] += "   { path: ':id/edit', component: RecipeEditComponent, canActivate: [AuthGuard] },\n";
+		sections[2] += "] },\n";
+		sections[2] += "{ path: 'shopping-list', component: ShoppingListComponent },\n";
+		sections[2] += "{ path: 'signup', component: SignupComponent },\n";
+		sections[2] += "{ path: 'signin', component: SigninComponent },\n";
+		sections[2] += "];";
+		
+		String input = "";
+		for (String section: sections ) 
+			input += section+"\n\n";
+		
+//		ngAppRoutingModule.input(input);
+//		
+//		NgAppRoutingModule ngAppRoutingModule2 = new NgAppRoutingModule(input,ngAppModule,iniFile);
+//
+//		String output3 = ngAppRoutingModule2.output();
+//		
+		
+	}
+	
+	/*
+	 * Remake a default app-routine.module.ts and make any necessary changes.
+	 */
+	
+//	@Test
+//	public void test_02_NgAppRoutingModule() throws Exception {
+//
+//		String contents = HTMLEdit.loadLocalFile("sample.app.module1.ts");
+//		Assert.assertTrue(contents.contains("export class AppModule { }"));
+//		
+//		NgAppModule ngAppModule = new NgAppModule(contents,iniFile);
+//
+//		NgAppRoutingModule ngAppRoutingModule = new NgAppRoutingModule(ngAppModule,iniFile);
+//		
+//		ngAppRoutingModule.input();
+//		ngAppRoutingModule.output();
+//		
+//	}
+
+	@Test
+	public void testLinkConversion() throws Exception {
+		// import { AboutCppComponent } from './pages/about-cpp/about-cpp.component';
+		String before = "../../about-cpp/about-cpp.html";
+		String after = "/about_cpp";
+		String test = NgAppRoutes.adjustLink(before);
+		Assert.assertEquals(after,test);
+	}
+	
+	@Test()
+	public void testFormatModule0() throws Exception {
+		
+		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+		Assert.assertTrue(appModuleContent.contains(importAppComponentFrom));
+		Assert.assertTrue(!appModuleContent.contains(constAppRoutesRoutes));
+		Assert.assertTrue(!appModuleContent.contains(importRouterModuleRoutesFrom));
+		Assert.assertTrue(!appModuleContent.contains(importAppBaseHrefFrom));
+		Assert.assertTrue(!appModuleContent.contains(providersProvideAppBaseHref));
+
+	}
+	
+	@Test()
+	public void testFormatModule1() throws Exception {
+		
+		String appImports = "import { AppComponent } from './app.component';";
+		NgImportMap ngImportMap = new NgImportMap(appImports);
+		ngImportMap.output();
+		
+		Assert.assertTrue(ngImportMap.size() == 1);
+		Assert.assertTrue(ngImportMap.get("AppComponent").getKey().equals("AppComponent"));
+		Assert.assertTrue(ngImportMap.get("AppComponent").getPath().equals("./app.component"));
+		
+	}
+	
+//	@Test()
+//	public void testFormatModule2() throws Exception {
+//		
+//		NgAppModule ngAppModule = new NgAppModule(this.contents,iniFile);
+//		String appImports = ngAppModule.getAppImportSection();
+//		NgImportMap ngImportMap = new NgImportMap(appImports, iniFile);
+//		
+//		ngImportMap.input();
+//		ngImportMap.output();
+//		
+//		Assert.assertTrue(ngImportMap.size() == 18);
+//		Assert.assertTrue(ngImportMap.get("BackControllerComponent").getKey().equals("BackControllerComponent"));
+//		Assert.assertTrue(ngImportMap.get("BackControllerComponent").getPath().equals("./symbols/back-controller/back-controller.component"));
+//		Assert.assertTrue(ngImportMap.get("AppComponent").getKey().equals("AppComponent"));
+//		Assert.assertTrue(ngImportMap.get("AppComponent").getPath().equals("./app.component"));
+//
+//	}
+	
+	@Test()
+	public void testFormatModule3() throws Exception {
+		
+		NgAppModule nam = new NgAppModule(iniFile);
+		Assert.assertNotNull(nam);
+		
+		nam.input(null);
+		nam.output();
+		
+		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+		Assert.assertTrue(!appModuleContent.contains(constAppRoutesRoutes));
+		Assert.assertTrue(appModuleContent.contains(importRouterModuleRoutesFrom));
+		Assert.assertTrue(appModuleContent.contains(importAppBaseHrefFrom));
+		Assert.assertTrue(appModuleContent.contains(providersProvideAppBaseHref));
+	}
+	
+//	@Test()
+//	public void testFormatModule4() throws Exception {
+//		
+//		SourceIndexFileEntry homePage = this.sourceExtractor.getIndex();
+//		Assert.assertNotNull(homePage);
+//		NgHomeComponent homeComponent = new NgHomeComponent("index.html",homePage,iniFile);
+//		Assert.assertNotNull(homeComponent);
+//		homeComponent.input();
+//		homeComponent.output();
+//		
+//		NgAppModule nam = new NgAppModule(iniFile);
+//		Assert.assertNotNull(nam);
+//		
+//		nam.input();
+//		nam.output();
+//		
+//		testFormatModule2();
+//		
+//		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+//		Assert.assertTrue(appModuleContent.contains(constAppRoutesRoutes));
+//		Assert.assertTrue(appModuleContent.contains(importRouterModuleRoutesFrom));
+//		Assert.assertTrue(appModuleContent.contains(importAppBaseHrefFrom));
+//		Assert.assertTrue(appModuleContent.contains(providersProvideAppBaseHref));
+//	}
+//	
+//	@Test()
+//	public void testFormatModule5() throws Exception {
+//		
+//		this.sourceExtractor.output();
+//		
+//		NgAppModule nam = new NgAppModule(iniFile);
+//		Assert.assertNotNull(nam);
+//		
+//		nam.input();
+//		nam.output();
+//		
+//		testFormatModule2();
+//		
+//		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+//		Assert.assertTrue(appModuleContent.contains(constAppRoutesRoutes));
+//		Assert.assertTrue(appModuleContent.contains(importRouterModuleRoutesFrom));
+//		Assert.assertTrue(appModuleContent.contains(importAppBaseHrefFrom));
+//		Assert.assertTrue(appModuleContent.contains(providersProvideAppBaseHref));
+//	}
+	
+//	@Test()
+//	public void testFormatModule6() throws Exception {
+//		
+//		this.formatter.output();
+//		
+//		testFormatModule2();
+//		
+//		this.appModuleContent = NgTextFile.input(appModuleFilename, iniFile);
+//		Assert.assertTrue(!appModuleContent.contains(constAppRoutesRoutes));
+//		Assert.assertTrue(appModuleContent.contains(importRouterModuleRoutesFrom));
+//		Assert.assertTrue(appModuleContent.contains(importAppBaseHrefFrom));
+//		Assert.assertTrue(appModuleContent.contains(providersProvideAppBaseHref));
+//	}
+	
+	@Test()
+	public void testAppModule() throws Exception {
+		
+		NgComponentExtractor formatter = new NgComponentExtractor(extractor);
+		Assert.assertNotNull(formatter);
+		
+		formatter.input();
+		formatter.output();
+		
+		Assert.assertTrue(new File(iniFile.getDestination()+"/index.html").isFile());
+		String htmlContent = NgTextFile.input(iniFile.getDestination()+"/index.html", iniFile);
+		Assert.assertTrue(htmlContent.contains("<app-root></app-root>"));
+		
+		NgAppModule nam = new NgAppModule(iniFile);
+		
+		nam.input(null);
+		nam.output();
+		
+	}
+}
+
