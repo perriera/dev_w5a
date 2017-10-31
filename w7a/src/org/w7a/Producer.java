@@ -41,8 +41,7 @@ public class Producer implements Runnable {
 
 					try {
 
-						BufferedInputStream buffer = new BufferedInputStream(socket.getInputStream());
-						ObjectInputStream input = new ObjectInputStream(buffer);
+						ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 						Object object = input.readObject();
 
 						if (object instanceof DownloadRequest) {
@@ -53,8 +52,7 @@ public class Producer implements Runnable {
 							}
 						}
 
-						BufferedOutputStream buffer2 = new BufferedOutputStream(socket.getOutputStream());
-						ObjectOutputStream output = new ObjectOutputStream(buffer2);
+						ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 						output.writeObject(object);
 						output.flush();
 
