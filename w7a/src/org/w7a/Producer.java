@@ -34,7 +34,7 @@ public class Producer implements Runnable {
 			ServerSocket listener = new ServerSocket(Client.port);
 
 			try {
-				
+
 				while (true) {
 
 					Socket socket = listener.accept();
