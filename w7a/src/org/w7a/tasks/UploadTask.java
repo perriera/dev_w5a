@@ -33,10 +33,10 @@ public class UploadTask extends UploadRequest implements TaskInterface {
 			try {
 
 				ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-				UploadRequest object = (UploadRequest)input.readObject();
-				
-				Path path = Paths.get("files/"+object.filename);
-			    Files.write(path, object.buffer); 
+				UploadRequest object = (UploadRequest) input.readObject();
+
+				Path path = Paths.get("files/" + object.filename);
+				Files.write(path, object.buffer);
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -50,7 +50,7 @@ public class UploadTask extends UploadRequest implements TaskInterface {
 			listener.close();
 			PortManager.getInstance().put(this.request.getFreeport());
 		}
-		
+
 	}
 
 }
