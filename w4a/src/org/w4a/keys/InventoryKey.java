@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.w4a.exceptions.BadInventoryKeyException;
 
-public class InventoryKey {
+public class InventoryKey implements InventoryKeyInterface {
 	
 	String token;
 	String key;
