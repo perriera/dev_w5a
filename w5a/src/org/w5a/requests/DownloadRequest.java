@@ -17,7 +17,7 @@ public class DownloadRequest extends UploadRequest implements RequestInterface {
 	public DownloadRequest(String filename) {
 		super(filename);
 	}
-	
+
 	@Override
 	public void resolve() throws Exception {
 
@@ -25,12 +25,12 @@ public class DownloadRequest extends UploadRequest implements RequestInterface {
 
 		BufferedInputStream buffer = new BufferedInputStream(socket.getInputStream());
 		ObjectInputStream input = new ObjectInputStream(buffer);
-		DownloadRequest object = (DownloadRequest)input.readObject();
-		
-		Path path = Paths.get("files/"+object.filename);
-	    Files.write(path, object.buffer); 
-	    
-	    socket.close();
+		DownloadRequest object = (DownloadRequest) input.readObject();
+
+		Path path = Paths.get("files/" + object.filename);
+		Files.write(path, object.buffer);
+
+		socket.close();
 
 	}
 
