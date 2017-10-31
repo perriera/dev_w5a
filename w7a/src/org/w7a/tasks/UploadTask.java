@@ -32,8 +32,7 @@ public class UploadTask extends UploadRequest implements TaskInterface {
 
 			try {
 
-				BufferedInputStream buffer = new BufferedInputStream(socket.getInputStream());
-				ObjectInputStream input = new ObjectInputStream(buffer);
+				ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 				UploadRequest object = (UploadRequest)input.readObject();
 				
 				Path path = Paths.get("files/"+object.filename);

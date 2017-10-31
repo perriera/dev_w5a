@@ -23,8 +23,7 @@ public class DownloadRequest extends UploadRequest implements RequestInterface {
 
 		Socket socket = new Socket(this.getAddress(), this.getFreeport());
 
-		BufferedInputStream buffer = new BufferedInputStream(socket.getInputStream());
-		ObjectInputStream input = new ObjectInputStream(buffer);
+		ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 		DownloadRequest object = (DownloadRequest) input.readObject();
 
 		Path path = Paths.get("files/" + object.filename);

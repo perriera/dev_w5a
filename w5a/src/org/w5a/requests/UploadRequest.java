@@ -29,28 +29,25 @@ public class UploadRequest extends FreeportRequest implements RequestInterface {
 
 	public UploadRequest() {
 	}
-	
+
 	public void request() throws Exception {
-		
+
 		Socket socket = new Socket(Client.serverAddress, Client.port);
-				 
-		BufferedOutputStream buffer = new BufferedOutputStream(socket.getOutputStream());
-		ObjectOutputStream output = new ObjectOutputStream(buffer);
+
+		ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 		output.writeObject(this);
 		output.flush();
 
 		try {
-			BufferedInputStream buffer4 = new BufferedInputStream(socket.getInputStream());
-			ObjectInputStream input = new ObjectInputStream(buffer4);
-			UploadRequest response = (UploadRequest)input.readObject();
+			ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+			UploadRequest response = (UploadRequest) input.readObject();
 			response.resolve();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			socket.close();
 		}
-		
+
 	}
 
 	@Override
@@ -61,8 +58,7 @@ public class UploadRequest extends FreeportRequest implements RequestInterface {
 
 		Socket socket = new Socket(this.getAddress(), this.getFreeport());
 
-		BufferedOutputStream buffer = new BufferedOutputStream(socket.getOutputStream());
-		ObjectOutputStream output = new ObjectOutputStream(buffer);
+		ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 		output.writeObject(this);
 		output.flush();
 		socket.close();

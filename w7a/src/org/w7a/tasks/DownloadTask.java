@@ -32,8 +32,7 @@ public class DownloadTask extends UploadTask {
 				Path path = Paths.get("files/" + this.request.filename);
 				this.request.buffer = Files.readAllBytes(path);
 				
-				BufferedOutputStream buffer = new BufferedOutputStream(socket.getOutputStream());
-				ObjectOutputStream output = new ObjectOutputStream(buffer);
+				ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 				output.writeObject(this.request);
 				output.flush();
 
