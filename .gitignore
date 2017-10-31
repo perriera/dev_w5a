@@ -81,6 +81,14 @@ w2a/mock-project
 w3a/bin
 w4a/bin
 w4a/server
+w5a/bin
+w5a/server
+w6a/bin
+w6a/server
+w7a/bin
+w7a/server
+w8a/bin
+w8a/server
 
 # Optional npm cache directory
 .npm
