@@ -9,11 +9,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.w7a.tasks.TaskInterface;
 
 public class Server {
-
-	/**
-	 * Runs the server.
-	 */
-	public static void main(String[] args) throws IOException {
+	
+	public Server() {
 		
 		BlockingQueue<TaskInterface> sharedQueue = new LinkedBlockingQueue<TaskInterface>();
 
@@ -23,6 +20,15 @@ public class Server {
 		pes.submit(new Producer(sharedQueue,1));
 		ces.submit(new Consumer(sharedQueue,1));
 		ces.submit(new Consumer(sharedQueue,2));
+		
+	}
+
+	/**
+	 * Runs the server.
+	 */
+	public static void main(String[] args) throws IOException {
+		
+		new Server();
 		
 	}
 

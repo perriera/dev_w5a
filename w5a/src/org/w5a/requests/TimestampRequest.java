@@ -18,4 +18,21 @@ public class TimestampRequest implements RequestInterface {
 		System.out.println(timestamp);
 	}
 
+	@Override
+	public boolean isSuccessful() throws Exception {
+		return true;
+	}
+
+	@Override
+	public void request() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSuccessful(boolean state) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

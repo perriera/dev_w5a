@@ -1,26 +1,25 @@
 package org.w7a.tasks;
 
+import java.io.BufferedOutputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.w5a.requests.Sockets;
-import org.w5a.requests.UploadRequest;
+import org.w5a.requests.ConvertRequest;
 import org.w7a.Directory;
 import org.w7a.managers.PortManager;
 
 @SuppressWarnings("serial")
-public class DownloadTask extends UploadTask {
+public class ConvertTask extends UploadTask {
 
-	public DownloadTask(UploadRequest request) throws InterruptedException {
+	public ConvertTask(ConvertRequest request) throws InterruptedException {
 		super(request);
 	}
-
-	@Override
-	public void resolve() throws Exception {
-		
+	
+	void download() throws Exception {
 		ServerSocket listener = new ServerSocket(this.request.getFreeport());
 		try {
 
@@ -31,8 +30,9 @@ public class DownloadTask extends UploadTask {
 				Path path = Paths.get(Directory.getUploadFilename(this.request.filename));
 				this.request.buffer = Files.readAllBytes(path);
 				
-				Sockets.write(socket,this.request);
-				this.setSuccessful(Sockets.read(socket).isSuccessful());
+				ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+				output.writeObject(this.request);
+				output.flush();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -44,6 +44,14 @@ public class DownloadTask extends UploadTask {
 			listener.close();
 			PortManager.getInstance().put(this.request.getFreeport());
 		}
+		
+	}
+
+	@Override
+	public void resolve() throws Exception {
+		
+		this.download();
+		this.setSuccessful(true);
 		
 	}
 	

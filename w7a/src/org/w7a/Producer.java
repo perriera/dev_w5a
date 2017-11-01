@@ -1,23 +1,30 @@
 package org.w7a;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import org.w5a.Client;
+import org.w5a.requests.ConvertRequest;
 import org.w5a.requests.DownloadRequest;
+import org.w5a.requests.RequestInterface;
+import org.w5a.requests.Sockets;
 import org.w5a.requests.UploadRequest;
+import org.w7a.tasks.ConvertTask;
 import org.w7a.tasks.DownloadTask;
 import org.w7a.tasks.TaskInterface;
 import org.w7a.tasks.UploadTask;
 
 public class Producer implements Runnable {
 
+//	String requestName = requestObject.getClass().getSimpleName();
+//	String taskName = requestName.replace("Request", "Task");
+//	Class<?> cl = Class.forName("org.w7a.tasks."+taskName);
+//	Constructor<?> cons = cl.getConstructor(requestObject.getClass());
+//	TaskInterface taskObject = (TaskInterface)cons.newInstance(requestObject);
+//	taskQueue.put(taskObject);
+	
 	private final BlockingQueue<TaskInterface> taskQueue;
 	private int threadNo;
 
@@ -41,22 +48,23 @@ public class Producer implements Runnable {
 
 					try {
 
-						ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-						Object object = input.readObject();
+						RequestInterface requestObject = Sockets.read(socket);
 
-						if (object instanceof DownloadRequest) {
-							taskQueue.put(new DownloadTask((DownloadRequest) object));
+						if (requestObject instanceof ConvertRequest) {
+							taskQueue.put(new ConvertTask((ConvertRequest) requestObject));
 						} else {
-							if (object instanceof UploadRequest) {
-								taskQueue.put(new UploadTask((UploadRequest) object));
+							if (requestObject instanceof DownloadRequest) {
+								taskQueue.put(new DownloadTask((DownloadRequest) requestObject));
+							} else {
+								if (requestObject instanceof UploadRequest) {
+									taskQueue.put(new UploadTask((UploadRequest) requestObject));
+								}
 							}
 						}
 
-						ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-						output.writeObject(object);
-						output.flush();
+						Sockets.write(socket, requestObject);
 
-						System.out.println("Produced:" + object + ":by thread:" + threadNo);
+						System.out.println("Produced:" + requestObject + ":by thread:" + threadNo);
 
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();

@@ -1,7 +1,13 @@
 package org.w5a.requests;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
-public class FreeportRequest implements RequestInterface {
+abstract public class FreeportRequest implements RequestInterface {
 
 	/**
 	 * 
@@ -25,11 +31,6 @@ public class FreeportRequest implements RequestInterface {
 
 	public int getFreeport() {
 		return freeport;
-	}
-
-	@Override
-	public void resolve() throws Exception {
-		System.out.println(freeport);
 	}
 	
 }

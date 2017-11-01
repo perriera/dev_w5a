@@ -1,11 +1,5 @@
 package org.w5a.requests;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +16,7 @@ public class UploadRequest extends FreeportRequest implements RequestInterface {
 
 	public String filename;
 	public byte[] buffer;
+	boolean successful = false;
 
 	public UploadRequest(String filename) {
 		this.filename = filename;
@@ -33,15 +28,12 @@ public class UploadRequest extends FreeportRequest implements RequestInterface {
 	public void request() throws Exception {
 
 		Socket socket = new Socket(Client.serverAddress, Client.port);
-
-		ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-		output.writeObject(this);
-		output.flush();
+		Sockets.write(socket, this);
 
 		try {
-			ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-			UploadRequest response = (UploadRequest) input.readObject();
+			UploadRequest response = (UploadRequest) Sockets.read(socket);
 			response.resolve();
+			this.successful = response.successful;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -56,13 +48,21 @@ public class UploadRequest extends FreeportRequest implements RequestInterface {
 		Path path = Paths.get("files/" + filename);
 		this.buffer = Files.readAllBytes(path);
 
-		Socket socket = new Socket(this.getAddress(), this.getFreeport());
-
-		ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-		output.writeObject(this);
-		output.flush();
+		Socket socket = new Socket(this.getAddress(), this.getFreeport());		
+		Sockets.write(socket, this);
+		this.successful = Sockets.read(socket).isSuccessful();
 		socket.close();
 
+	}
+
+	@Override
+	public boolean isSuccessful() throws Exception {
+		return this.successful;
+	}
+
+	@Override
+	public void setSuccessful(boolean state) throws Exception {
+		this.successful = state;
 	}
 
 }
