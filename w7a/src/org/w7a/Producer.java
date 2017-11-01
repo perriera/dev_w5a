@@ -38,7 +38,7 @@ public class Producer implements Runnable {
 
 		try {
 
-			ServerSocket listener = new ServerSocket(Client.port);
+			ServerSocket listener = new ServerSocket(Client.PORTAUTHORITYPORT);
 
 			try {
 
