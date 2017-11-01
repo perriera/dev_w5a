@@ -6,10 +6,10 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import org.w5a.Client;
+import org.w5a.Sockets;
 import org.w5a.requests.ConvertRequest;
 import org.w5a.requests.DownloadRequest;
 import org.w5a.requests.RequestInterface;
-import org.w5a.requests.Sockets;
 import org.w5a.requests.UploadRequest;
 import org.w7a.tasks.ConvertTask;
 import org.w7a.tasks.DownloadTask;

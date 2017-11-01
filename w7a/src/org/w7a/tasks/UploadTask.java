@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.w5a.requests.Sockets;
+import org.w5a.Sockets;
 import org.w5a.requests.UploadRequest;
 import org.w7a.Directory;
 import org.w7a.managers.PortManager;
@@ -18,43 +18,32 @@ public class UploadTask extends UploadRequest implements TaskInterface {
 
 	public UploadTask(UploadRequest request) throws InterruptedException {
 		this.request = request;
-		int freeport = PortManager.getInstance().take();
 		this.request.setAddress("localhost");
-		this.request.setFreeport(freeport);
+		this.request.setFreeport(PortManager.getInstance().take());
+	}
+
+	protected void finalize() throws Throwable {
+		PortManager.getInstance().put(this.request.getFreeport());
+		super.finalize();
 	}
 
 	@Override
 	public void resolve() throws Exception {
-		
+
 		ServerSocket listener = new ServerSocket(this.request.getFreeport());
-		
-		try {
+		Socket socket = listener.accept();
 
-			Socket socket = listener.accept();
+		UploadRequest object = (UploadRequest) Sockets.read(socket);
 
-			try {
+		Path path = Paths.get(Directory.getUploadFilename(object.filename));
+		Files.write(path, object.buffer);
 
-				UploadRequest object = (UploadRequest) Sockets.read(socket);
+		object.setSuccessful(true);
+		Sockets.write(socket, object);
+		this.setSuccessful(true);
 
-				Path path = Paths.get(Directory.getUploadFilename(object.filename));
-				Files.write(path, object.buffer);
-				
-				object.setSuccessful(true);
-				Sockets.write(socket, object);
-				this.setSuccessful(true);
-
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				socket.close();
-			}
-
-		} finally {
-			listener.close();
-			PortManager.getInstance().put(this.request.getFreeport());
-		}
+		socket.close();
+		listener.close();
 
 	}
 

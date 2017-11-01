@@ -9,10 +9,11 @@ import java.nio.file.Paths;
 
 public class ConvertRequest extends UploadRequest implements RequestInterface {
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -325838185099451063L;
+	private static final long serialVersionUID = 4177849326279650081L;
 
 	public ConvertRequest(String filename) {
 		super(filename);

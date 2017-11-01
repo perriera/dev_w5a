@@ -6,7 +6,8 @@ public class TimestampRequest implements RequestInterface {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2444095163722856011L;
+	private static final long serialVersionUID = -5144319838721960635L;
+	
 	String timestamp;
 
 	public void setTimestamp(String string) {
